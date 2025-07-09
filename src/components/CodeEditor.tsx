@@ -49,7 +49,6 @@ export const CodeEditor = ({ initialCode = "", onRunSuccess }: CodeEditorProps) 
         toast({
           title: "Code ran without output",
           description: "Try adding console.log() statements to see results.",
-          variant: "outline",
           duration: 2000,
         });
       }
@@ -82,13 +81,13 @@ export const CodeEditor = ({ initialCode = "", onRunSuccess }: CodeEditorProps) 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {/* Code Input */}
-      <Card className="border-2 border-blue-200">
+      <Card className="border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
-              <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-              <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+              <div className="w-3 h-3 bg-red-400 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
               <span className="ml-2 text-sm font-mono">script.js</span>
             </CardTitle>
             <div className="flex gap-2">
@@ -97,6 +96,7 @@ export const CodeEditor = ({ initialCode = "", onRunSuccess }: CodeEditorProps) 
                 size="sm" 
                 onClick={resetCode}
                 disabled={isRunning}
+                className="hover:scale-105 transition-transform"
               >
                 <RotateCcw className="h-4 w-4" />
               </Button>
@@ -104,7 +104,7 @@ export const CodeEditor = ({ initialCode = "", onRunSuccess }: CodeEditorProps) 
                 onClick={runCode} 
                 disabled={isRunning || !code.trim()}
                 size="sm"
-                className="bg-green-600 hover:bg-green-700"
+                className="bg-green-600 hover:bg-green-700 hover:scale-105 transition-all"
               >
                 <Play className="h-4 w-4 mr-1" />
                 {isRunning ? "Running..." : "Run"}
@@ -124,26 +124,30 @@ export const CodeEditor = ({ initialCode = "", onRunSuccess }: CodeEditorProps) 
       </Card>
 
       {/* Output */}
-      <Card className="border-2 border-green-200">
+      <Card className="border-2 border-green-200 hover:border-green-400 transition-all duration-300 hover:shadow-lg">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex items-center gap-2">
             <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
             <span className="text-sm font-mono">Console Output</span>
             {output.length > 0 && !output[0].startsWith('❌') && (
-              <CheckCircle className="h-4 w-4 text-green-500 ml-auto" />
+              <CheckCircle className="h-4 w-4 text-green-500 ml-auto animate-bounce" />
             )}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="bg-gray-900 text-green-400 p-4 rounded font-mono text-sm min-h-[300px] overflow-auto">
             {output.length === 0 ? (
-              <div className="text-gray-500 italic">
+              <div className="text-gray-500 italic animate-pulse">
                 📟 Console output will appear here when you run your code...
               </div>
             ) : (
               <div className="space-y-1">
                 {output.map((line, index) => (
-                  <div key={index} className={line.startsWith('❌') ? 'text-red-400' : 'text-green-400'}>
+                  <div 
+                    key={index} 
+                    className={`${line.startsWith('❌') ? 'text-red-400' : 'text-green-400'} animate-fade-in`}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
                     <span className="text-gray-500 mr-2">&gt;</span>
                     {line}
                   </div>
